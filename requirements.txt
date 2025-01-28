@@ -1,0 +1,4 @@
+python-dotenv
+python-env
+semantic_kernel
+asyncio
