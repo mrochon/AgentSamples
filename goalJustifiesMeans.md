@@ -1,7 +1,8 @@
 ## Proposal
 
 Goal justifies the means
-##Advocate
+
+## Advocate
 
  The principle that the goal justifies the means is rooted in the idea that achieving a significant outcome can outweigh the methods employed to get there. Here are several reasons supporting this proposal:
 
