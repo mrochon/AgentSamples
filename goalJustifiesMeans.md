@@ -1,4 +1,4 @@
-##Proposal
+## Proposal
 
 Goal justifies the means
 ##Advocate
@@ -22,7 +22,7 @@ In response to any prosecutor claims against this proposal, such as potential ab
 3. **Evolving Norms**: Societal norms change over time, and what may seem morally questionable at one moment may later be viewed as necessary for progress. Embracing the idea that goals can justify means reflects an understanding of this evolution.
 
 By recognizing the potential benefits and ethical considerations that can accompany this principle, we can argue effectively in its support.
-##Prosecutor
+## Prosecutor
 
  The principle that "the goal justifies the means" can lead to dangerous and unethical outcomes. Here are the arguments against the proposal:
 
@@ -37,6 +37,6 @@ By recognizing the potential benefits and ethical considerations that can accomp
 5. **Erosion of Trust**: When individuals or organizations operate under this principle, it can lead to a breakdown of trust in societal institutions and ethical frameworks, ultimately harming the fabric of society.
 
 In summary, while the intention behind a goal may be good, it does not justify unethical means. We must hold to moral integrity to ensure lasting and genuine positive outcomes.
-##Advocate
+## Advocate
 
  I give up.
