@@ -2,3 +2,6 @@ python-dotenv
 python-env
 semantic_kernel
 asyncio
+pandas
+pillow
+requests
