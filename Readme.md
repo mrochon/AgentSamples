@@ -2,10 +2,10 @@
 
 My experiements with Semantic Kernel and Assistants
 
-Argument and argumentSK notebook have two agents arguing against each other about a user proposal.
+[Argument](/argument.ipynb) and [argumentSK](/argumentSK) notebook have two agents arguing against each other about a user proposal. The latter uses SemnticKernel SDK.
 
-[Example result](https://github.com/mrochon/AgentsCognitiveSDK/blob/main/python_argument.md)
+[Example result](/responses/python_argument.md)
 
-[AgentWithCode](https://github.com/mrochon/AgentSamples/blob/main/agentWithCode.ipynb) generates Py code to draw a sinus curve
+[AgentWithCode](/agentWithCode.ipynb) generates Py code to draw a sinus curve
 
 [AgentWithFunction](/agentWithFunction.ipynb) provides a list for packing for travel to a particular desination
