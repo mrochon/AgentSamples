@@ -1,6 +1,7 @@
 # Helper functions and objects
 
 import inspect
+from IPython.display import clear_output
 
 def function_to_schema(func) -> dict:
     type_map = {
@@ -61,4 +62,7 @@ def test(b: int, x: A):
     return "done"
 
 
-print(function_to_schema(test))
+# print(function_to_schema(test))
+
+
+    
