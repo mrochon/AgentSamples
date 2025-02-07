@@ -10,18 +10,18 @@ def list_to_csv(data: list):
     writer.writerows(data)
     return output.getvalue().strip()
 
-def get_tables(dbName: str):
+def get_tables():
     """
     Get list of tables for the database.
     """
     tables = [["Address", "Customer", "CustomerAddress", "Product", "ProductCategory", "ProductDescription", "ProductModel", "ProductModelProductDescription"]]
     return list_to_csv(tables)
     
-def get_columns(tables_csv: str):
+def get_columns(tables: str):
     """
     Get list of columns for the tables in the database.
     """
-    tables = tables_csv.split(',')
+    tabs = tables.split(',')
     columns = {
         "Address": [["AddressID", "AddressLine1", "AddressLine2", "City", "StateProvinceID", "PostalCode", "rowguid", "ModifiedDate"]],
         "Customer": [["CustomerID", "PersonID", "FirstName", "LastName", "AccountNumber", "rowguid", "ModifiedDate"]],
@@ -32,8 +32,8 @@ def get_columns(tables_csv: str):
         "ProductModel": [["ProductModelID", "Name", "CatalogDescription", "rowguid", "ModifiedDate"]],
         "ProductModelProductDescription": [["ProductModelID", "ProductDescriptionID", "Culture", "rowguid", "ModifiedDate"]]
     }
-    selected_columns = {table: columns[table] for table in tables if table in columns}
-    return list_to_csv(selected_columns[tables[0]])
+    selected_columns = {table: columns[table] for table in tabs if table in columns}
+    return list_to_csv(selected_columns)
 
 def try_query(query: str):
     """
@@ -45,5 +45,5 @@ def try_query(query: str):
     ]
     return list_to_csv([results])
 
-# print(get_columns(["Customer", "Product"]))
+print(get_columns("Customer, Product"))
 # print(try_query("select all"))

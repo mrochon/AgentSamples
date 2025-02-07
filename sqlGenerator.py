@@ -28,6 +28,8 @@ def wait_on_run(run):
         print("Elapsed time: {} minutes {} seconds".format(int((time.time() - start_time) // 60), int((time.time() - start_time) % 60)))
         status = run.status
         print(f'Status: {status}')
+        if(status == "failed"):
+          print(run.last_error.message)
         clear_output(wait=True)
     return run
 
@@ -41,8 +43,12 @@ def call_function(run):
     print(arguments)
     tool_outputs = []
     match name:
-      case "get_weather":
-        tool_outputs.append({"tool_call_id": tool_call.id, "output": get_weather(arguments["place"], arguments["date"])})
+      case "get_tables":
+        tool_outputs.append({"tool_call_id": tool_call.id, "output": get_tables()})
+      case "get_columns":
+        tool_outputs.append({"tool_call_id": tool_call.id, "output": get_columns(arguments["tables"])})
+      case "try_query":
+        tool_outputs.append({"tool_call_id": tool_call.id, "output": try_query(arguments["query"])})        
       case _:
         print("Unknown function")
     return client.beta.threads.runs.submit_tool_outputs(
@@ -53,8 +59,13 @@ def call_function(run):
 
 load_dotenv()
 
+# print(os.getenv("AZURE_OPENAI_ENDPOINT"))
+# print(os.getenv("AZURE_OPENAI_API_KEY"))
+# print(os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"))
+# exit()
+
 client = AzureOpenAI(
-    azure_endpoint=os.environ["AZURE_OPENAI_ENDPOINT"],    
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),    
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     api_version="2024-05-01-preview",
 )
@@ -69,7 +80,10 @@ sql_agent = client.beta.assistants.create(
    try_query - takes an SQL query as an argument and returns the first 10 rows of the result or an error message. If the response to the query is an error message, 
       use it to modify the query and try again. If the response is table data you can stop.
 """,
-    tools=[function_to_schema(get_tables), function_to_schema(get_columns), function_to_schema(try_query)],
+    tools=[
+        {'type': 'function', 'function': {'name': 'get_tables', 'description': 'Get list of tables for the database.'}}, 
+        function_to_schema(get_columns), 
+        function_to_schema(try_query)],
     model = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"), 
 )
 
