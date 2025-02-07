@@ -23,14 +23,15 @@ def wait_on_run(run):
     start_time = time.time()
     status = run.status
     while status not in ["completed", "cancelled", "expired", "failed", "requires_action"]:
-        time.sleep(5)
         run = client.beta.threads.runs.retrieve(thread_id=run.thread_id,run_id=run.id)
-        print("Elapsed time: {} minutes {} seconds".format(int((time.time() - start_time) // 60), int((time.time() - start_time) % 60)))
+        # print("Elapsed time: {} minutes {} seconds".format(int((time.time() - start_time) // 60), int((time.time() - start_time) % 60)))
         status = run.status
-        print(f'Status: {status}')
+        if(status == "queued"):
+                  time.sleep(5)
+        # print(f'Status: {status}')
         if(status == "failed"):
           print(run.last_error.message)
-        clear_output(wait=True)
+        # clear_output(wait=True)
     return run
 
 
@@ -38,9 +39,9 @@ def call_function(run):
     tool_call = run.required_action.submit_tool_outputs.tool_calls[0]
     name = tool_call.function.name
     arguments = json.loads(tool_call.function.arguments)
-    print("Waiting for custom Function:", name)
-    print("Function arguments:")
-    print(arguments)
+    print("Calling Function:", name)
+    # print("Function arguments:")
+    # print(arguments)
     tool_outputs = []
     match name:
       case "get_tables":
@@ -79,6 +80,7 @@ sql_agent = client.beta.assistants.create(
    get_columns - returns names of all columns in the tables you must provide to the function
    try_query - takes an SQL query as an argument and returns the first 10 rows of the result or an error message. If the response to the query is an error message, 
       use it to modify the query and try again. If the response is table data you can stop.
+   If additional information is required, respond with a request for that information starting with "Please provide".
 """,
     tools=[
         {'type': 'function', 'function': {'name': 'get_tables', 'description': 'Get list of tables for the database.'}}, 
@@ -106,7 +108,11 @@ while True:
         break
     case "requires_action":
       run = call_function(run)
+    case 'failed':
+      print(f"Failed: {run.last_error.message}")
+      break
     case _:
       print(f"Unexpected action: {run.status}")
       break
+    
 print("Done")

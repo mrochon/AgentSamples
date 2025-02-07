@@ -42,11 +42,12 @@ def try_query(query: str):
     """
     Try running an SQL query and return the first 10 rows of the result or an error message.
     """
+    print(f"Trying query: {query}")
     results = [
         ["John", "Smith", "123 Main St", "Springfield", "IL", "62701"],
         ["Alex", "Johnson", "456 Elm St", "Chicago", "IL", "60601"],
     ]
     return list_to_csv([results])
 
-print(get_columns("Customer,Product"))
+# print(get_columns("Customer,Product"))
 # print(try_query("select all"))
