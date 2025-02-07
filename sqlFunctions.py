@@ -32,8 +32,11 @@ def get_columns(tables: str):
         "ProductModel": [["ProductModelID", "Name", "CatalogDescription", "rowguid", "ModifiedDate"]],
         "ProductModelProductDescription": [["ProductModelID", "ProductDescriptionID", "Culture", "rowguid", "ModifiedDate"]]
     }
-    selected_columns = {table: columns[table] for table in tabs if table in columns}
-    return list_to_csv(selected_columns)
+    resp = ""
+    for table in tabs:
+        tabColumns = f"Table {table} contains the following columns: {list_to_csv(columns[table])}"
+        resp += tabColumns + "\n"
+    return resp
 
 def try_query(query: str):
     """
@@ -45,5 +48,5 @@ def try_query(query: str):
     ]
     return list_to_csv([results])
 
-print(get_columns("Customer, Product"))
+print(get_columns("Customer,Product"))
 # print(try_query("select all"))
