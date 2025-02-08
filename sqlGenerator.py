@@ -6,7 +6,7 @@ import time
 from helpers import function_to_schema
 from dotenv import load_dotenv
 from helpers import function_to_schema
-from sqlFunctions import get_tables, get_columns, try_query
+from sqlFunctions import get_tables, get_columns, get_tables_for_column, try_query
 
 def send_and_run(client, assistant_id, thread_id, content):
     client.beta.threads.messages.create(
@@ -48,6 +48,8 @@ def call_function(run):
         tool_outputs.append({"tool_call_id": tool_call.id, "output": get_tables()})
       case "get_columns":
         tool_outputs.append({"tool_call_id": tool_call.id, "output": get_columns(arguments["tables"])})
+      case "get_tables_for_column":
+        tool_outputs.append({"tool_call_id": tool_call.id, "output": get_tables_for_column(arguments["columnName"])})            
       case "try_query":
         tool_outputs.append({"tool_call_id": tool_call.id, "output": try_query(arguments["query"])})        
       case _:
@@ -78,20 +80,22 @@ sql_agent = client.beta.assistants.create(
    You have the following functions available to get more information or to test the query:
    get_tables - returns names of all tables in the database
    get_columns - returns names of all columns in the tables you must provide to the function
+   get_tables_for_column - takes a column name as an argument and returns the names of all tables that contain a column with this or a similar name
    try_query - takes an SQL query as an argument and returns the first 10 rows of the result or an error message. If the response to the query is an error message, 
       use it to modify the query and try again. If the response is table data you can stop.
-   If additional information is required, respond with a request for that information starting with "Please provide".
+   If none of the above functions is suitable and you need additional information, respond with a request for that information starting with "Please provide".
 """,
     tools=[
         {'type': 'function', 'function': {'name': 'get_tables', 'description': 'Get list of tables for the database.'}}, 
         function_to_schema(get_columns), 
+        function_to_schema(get_tables_for_column),
         function_to_schema(try_query)],
     model = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"), 
 )
 
 thread = client.beta.threads.create()
 completed = False
-msg = "List names of all customers."
+msg = "List names and ages of all customers."
 agent = sql_agent
 run = send_and_run(client, agent.id, thread.id, msg)
 while True:
