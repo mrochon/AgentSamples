@@ -91,6 +91,8 @@ sql_agent = client.beta.assistants.create(
         function_to_schema(get_tables_for_column),
         function_to_schema(try_query)],
     model = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"), 
+    temperature=1,
+    top_p=1    
 )
 
 thread = client.beta.threads.create()
