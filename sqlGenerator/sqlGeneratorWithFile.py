@@ -45,19 +45,6 @@ client = AzureOpenAI(
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     api_version="2024-05-01-preview",
 )
-sql_agent = client.beta.assistants.create(
-    name="SQL Expert",
-    instructions=f"""
-      You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. You must respond with one of the following
-      1. An SQL SELECT statement. Do not include any descriptive information, just plain SQL statement.
-      2. Request for more information from the user. To ask the user for more information, start the response with 'User input required:'
-      Make sure you only use table and column names contained in that schema.
-      """,
-    model = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"), 
-    tools=[{"type": "file_search"}],
-    temperature=1,
-    top_p=1    
-)
 
 vector_store = client.beta.vector_stores.create(name="DB Schema")
 file_paths = ["sqlGenerator/Schema.json"]
@@ -71,9 +58,19 @@ file_batch = client.beta.vector_stores.file_batches.upload_and_poll(
 print(file_batch.status)
 print(file_batch.file_counts)
 
-sql_agent = client.beta.assistants.update(
-  assistant_id=sql_agent.id,
-  tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},
+sql_agent = client.beta.assistants.create(
+    name="SQL Expert",
+    instructions=f"""
+      You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. You must respond with one of the following
+      1. An SQL SELECT statement. Do not include any descriptive information, just plain SQL statement.
+      2. Request for more information from the user. To ask the user for more information, start the response with 'User input required:'
+      Make sure you only use table and column names contained in that schema.
+      """,
+    model = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"), 
+    tools=[{"type": "file_search"}],
+    tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},    
+    temperature=1,
+    top_p=1    
 )
 
 thread = client.beta.threads.create()
