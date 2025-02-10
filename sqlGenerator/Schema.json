@@ -1,0 +1,776 @@
+[
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "CustomerID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "NameStyle",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "Title",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "FirstName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "MiddleName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "LastName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "Suffix",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "CompanyName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "SalesPerson",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "EmailAddress",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "Phone",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "PasswordHash",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "PasswordSalt",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Customer",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModel",
+    "COLUMN_NAME": "ProductModelID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModel",
+    "COLUMN_NAME": "Name",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModel",
+    "COLUMN_NAME": "CatalogDescription",
+    "DATA_TYPE": "xml"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModel",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModel",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "ProductModelID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Name",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Summary",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Manufacturer",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Copyright",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "ProductURL",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "WarrantyPeriod",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "WarrantyDescription",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "NoOfYears",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "MaintenanceDescription",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Wheel",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Saddle",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Pedal",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "BikeFrame",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Crankset",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "PictureAngle",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "PictureSize",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "ProductPhotoID",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Material",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Color",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "ProductLine",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "Style",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "RiderExperience",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductModelCatalogDescription",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductDescription",
+    "COLUMN_NAME": "ProductDescriptionID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductDescription",
+    "COLUMN_NAME": "Description",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductDescription",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductDescription",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ProductID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "Name",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ProductNumber",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "Color",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "StandardCost",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ListPrice",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "Size",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "Weight",
+    "DATA_TYPE": "decimal"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ProductCategoryID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ProductModelID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "SellStartDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "SellEndDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "DiscontinuedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ThumbNailPhoto",
+    "DATA_TYPE": "varbinary"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ThumbnailPhotoFileName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Product",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModelProductDescription",
+    "COLUMN_NAME": "ProductModelID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModelProductDescription",
+    "COLUMN_NAME": "ProductDescriptionID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModelProductDescription",
+    "COLUMN_NAME": "Culture",
+    "DATA_TYPE": "nchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModelProductDescription",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductModelProductDescription",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductAndDescription",
+    "COLUMN_NAME": "ProductID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductAndDescription",
+    "COLUMN_NAME": "Name",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductAndDescription",
+    "COLUMN_NAME": "ProductModel",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductAndDescription",
+    "COLUMN_NAME": "Culture",
+    "DATA_TYPE": "nchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vProductAndDescription",
+    "COLUMN_NAME": "Description",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductCategory",
+    "COLUMN_NAME": "ProductCategoryID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductCategory",
+    "COLUMN_NAME": "ParentProductCategoryID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductCategory",
+    "COLUMN_NAME": "Name",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductCategory",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "ProductCategory",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vGetAllCategories",
+    "COLUMN_NAME": "ParentProductCategoryName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vGetAllCategories",
+    "COLUMN_NAME": "ProductCategoryName",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "vGetAllCategories",
+    "COLUMN_NAME": "ProductCategoryID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "AddressID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "AddressLine1",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "AddressLine2",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "City",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "StateProvince",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "CountryRegion",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "PostalCode",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "Address",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "CustomerAddress",
+    "COLUMN_NAME": "CustomerID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "CustomerAddress",
+    "COLUMN_NAME": "AddressID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "CustomerAddress",
+    "COLUMN_NAME": "AddressType",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "CustomerAddress",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "CustomerAddress",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "SalesOrderID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "SalesOrderDetailID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "OrderQty",
+    "DATA_TYPE": "smallint"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "ProductID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "UnitPrice",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "UnitPriceDiscount",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "LineTotal",
+    "DATA_TYPE": "numeric"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderDetail",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "SalesOrderID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "RevisionNumber",
+    "DATA_TYPE": "tinyint"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "OrderDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "DueDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "ShipDate",
+    "DATA_TYPE": "datetime"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "Status",
+    "DATA_TYPE": "tinyint"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "OnlineOrderFlag",
+    "DATA_TYPE": "bit"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "SalesOrderNumber",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "PurchaseOrderNumber",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "AccountNumber",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "CustomerID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "ShipToAddressID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "BillToAddressID",
+    "DATA_TYPE": "int"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "ShipMethod",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "CreditCardApprovalCode",
+    "DATA_TYPE": "varchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "SubTotal",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "TaxAmt",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "Freight",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "TotalDue",
+    "DATA_TYPE": "money"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "Comment",
+    "DATA_TYPE": "nvarchar"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "rowguid",
+    "DATA_TYPE": "uniqueidentifier"
+  },
+  {
+    "TABLE_SCHEMA": "SalesLT",
+    "TABLE_NAME": "SalesOrderHeader",
+    "COLUMN_NAME": "ModifiedDate",
+    "DATA_TYPE": "datetime"
+  }
+]

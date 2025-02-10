@@ -5,3 +5,4 @@ asyncio
 pandas
 pillow
 requests
+azure.ai.projects
