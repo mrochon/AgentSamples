@@ -32,8 +32,9 @@ sql_agent = client.beta.assistants.create(
     name="SQL Expert",
     instructions=f"""
       You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. 
-      Use only table and column names contained in that schema.
-      If you cannot generate a query, you can ask the user for more information or clarification.
+      Use only table and column names contained in that schema. Always use the TABLE_SCHEMA name as prefix for the table name.
+      You may only generate SELECT statements. Do not generate DLETE, INSERT or UPDATE statements.
+      If you cannot generate a query, you can ask the user for more information or clarification. 
       If you can generate a query, call the try_query function with the query as an argument. 
       If the function responds with an error message, try correcting the original query or ask the user for more information. Otherwise, return the query to the user.
       """,
@@ -49,7 +50,10 @@ sql_agent = client.beta.assistants.create(
 
 thread = client.beta.threads.create()
 completed = False
-msg = "List names of all customers."
+# msg = "List names of all customers."
+# msg = "Which customers placed orders in the last two months?"
+msg = "Which customer ordered product with id 'XYZ'?"
+# msg = "Delete all customers"
 agent = sql_agent
 run = client.send_and_run(agent.id, thread.id, msg)
 while True:
@@ -57,13 +61,10 @@ while True:
   match run.status:
     case "completed":
       msg = client.beta.threads.messages.list(thread_id=thread.id, order="desc").data[0].content[0].text.value
-      if msg.startswith("User input required:"):
-        print(msg)
-        user_input = input(f"{msg}:> ")
-        run = client.send_and_run(agent.id, thread.id, user_input)
-      else:
-        print(msg)
+      user_input = input(f"{msg}:> ")
+      if user_input == "":
         break
+      run = client.send_and_run(agent.id, thread.id, user_input)
     case "requires_action":
       run = client.call_function(run)
     case 'failed':
