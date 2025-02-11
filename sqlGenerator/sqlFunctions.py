@@ -66,7 +66,8 @@ def try_query(query: str):
         ["John", "Smith", "123 Main St", "Springfield", "IL", "62701"],
         ["Alex", "Johnson", "456 Elm St", "Chicago", "IL", "60601"],
     ]
-    return list_to_csv([results])
+    return f"Query is valid. Sample data.\n\n{list_to_csv([results])}"
+    # return("Erroe: lastName is not a valid column name. Use lower case letters only")
 
 # print(get_columns("Customer,Product"))
 # print(try_query("select all"))
