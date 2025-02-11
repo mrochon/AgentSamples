@@ -1,18 +1,14 @@
 import os
-from openai import AzureOpenAI
-from IPython.display import clear_output
-import json
-import time
 from dotenv import load_dotenv
 # from azure.ai.projects.models import FileSearchTool, FilePurpose
 from helpers import function_to_schema
 from sqlFunctions import try_query
-from agentHelpers import send_and_run, wait_on_run, call_function
-
+#from agentHelpers import send_and_run, wait_on_run, call_function
+from clientHelper import ClientHelper
 
 load_dotenv()
 
-client = AzureOpenAI(
+client = ClientHelper(
     azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),    
     api_key=os.getenv("AZURE_OPENAI_API_KEY"),
     api_version="2024-05-01-preview",
@@ -55,21 +51,21 @@ thread = client.beta.threads.create()
 completed = False
 msg = "List names of all customers."
 agent = sql_agent
-run = send_and_run(client, agent.id, thread.id, msg)
+run = client.send_and_run(agent.id, thread.id, msg)
 while True:
-  run = wait_on_run(client, run)
+  run = client.wait_on_run(run)
   match run.status:
     case "completed":
       msg = client.beta.threads.messages.list(thread_id=thread.id, order="desc").data[0].content[0].text.value
       if msg.startswith("User input required:"):
         print(msg)
         user_input = input(f"{msg}:> ")
-        run = send_and_run(client, agent.id, thread.id, user_input)
+        run = client.send_and_run(agent.id, thread.id, user_input)
       else:
         print(msg)
         break
     case "requires_action":
-      run = call_function(client, run)
+      run = client.call_function(run)
     case 'failed':
       print(f"Failed: {run.last_error.message}")
       break
@@ -82,4 +78,5 @@ client.beta.vector_stores.delete(vector_store.id)
 client.beta.assistants.delete(sql_agent.id)
 client.beta.threads.delete(thread.id)
 
+print(f"Query: {client.query}")
 print("Done")
