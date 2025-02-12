@@ -37,10 +37,10 @@ async def main() -> None:
     sql = SQLPlugin()
     kernel.add_function("try_query", sql.try_query)
     
-    endpoint=os.getenv('AZURE_OPENAI_ENDPOINT')   
-    api_key=os.getenv('AZURE_OPENAI_API_KEY')
-    deployment=os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME")
-    kernel.add_service(AzureChatCompletion(deployment_name=deployment, endpoint=endpoint, api_key=api_key))    
+    # endpoint=os.getenv('AZURE_OPENAI_ENDPOINT')   
+    # api_key=os.getenv('AZURE_OPENAI_API_KEY')
+    # deployment=os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME")
+    kernel.add_service(AzureChatCompletion())    
 
     agent = await AzureAssistantAgent.create(
         kernel=kernel,
