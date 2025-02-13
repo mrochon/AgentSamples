@@ -32,14 +32,16 @@ class SQLPlugin:
         """
 
 async def main() -> None:
-    from semantic_kernel.connectors.ai.open_ai import AzureChatCompletion
+    from azure.identity.aio import DefaultAzureCredential
     
     kernel = Kernel()
     sql = SQLPlugin()
     kernel.add_function("try_query", sql.try_query)
+    token = await DefaultAzureCredential().get_token("https://cognitiveservices.azure.com/.default")
 
     agent = await AzureAssistantAgent.create(
         kernel=kernel,
+        azure_openai_chat_api_token=token,
         service_id="chat service",
         name="sqlGenerator",
         instructions="""
