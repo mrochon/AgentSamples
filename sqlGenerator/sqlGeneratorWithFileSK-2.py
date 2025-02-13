@@ -14,7 +14,8 @@ def get_filepath_for_filename(filename: str) -> str:
     base_directory = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(base_directory, filename)
 
-
+from dotenv import load_dotenv
+load_dotenv(override = True)
 filenames = [
     "schema.json",
 ]
@@ -36,11 +37,6 @@ async def main() -> None:
     kernel = Kernel()
     sql = SQLPlugin()
     kernel.add_function("try_query", sql.try_query)
-    
-    # endpoint=os.getenv('AZURE_OPENAI_ENDPOINT')   
-    # api_key=os.getenv('AZURE_OPENAI_API_KEY')
-    # deployment=os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME")
-    kernel.add_service(AzureChatCompletion())    
 
     agent = await AzureAssistantAgent.create(
         kernel=kernel,
