@@ -41,12 +41,12 @@ async def main() -> None:
 
     agent = await AzureAssistantAgent.create(
         kernel=kernel,
-        azure_openai_chat_api_token=token,
+        ad_token=token.token,
         service_id="chat service",
         name="sqlGenerator",
         instructions="""
       You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. 
-      Use only table and column names contained in that schema. Always use the TABLE_SCHEMA name as prefix for the table name.
+      Use only table and column names contained in that schema. Always use the value of the TABLE_SCHEMA column in the schema as prefix for the table name.
       You may only generate SELECT statements. Do not generate DLETE, INSERT or UPDATE statements.
       If you cannot generate a query, you can ask the user for more information or clarification. 
       If you can generate a query, call the try_query function with the query as an argument. 
