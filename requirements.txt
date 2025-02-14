@@ -6,3 +6,8 @@ pandas
 pillow
 requests
 azure.ai.projects
+pyodbc
+fastapi
+uvicorn[standard]
+pydantic
+azure-identity

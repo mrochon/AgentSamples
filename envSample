@@ -1,0 +1,14 @@
+AZURE_OPENAI_ENDPOINT = https://...
+xAZURE_OPENAI_API_KEY = 
+AZURE_OPENAI_CHAT_DEPLOYMENT_NAME = "gpt-4o-mini"
+AZURE_OPENAI_API_VERSION="2024-12-01-preview"
+
+AZURE_PROJECTS_CONNECTION_STRING="..."
+
+AZURE_TENANT_ID="..."
+AZURE_CLIENT_ID="..."
+AZURE_CLIENT_SECRET="..."
+AZURE_TOKEN_ENDPOINT="https://cognitiveservices.azure.com/.default"
+
+DB_SERVER="mrsqsrvr.database.windows.net"
+DB_NAME="testdb"

@@ -9,6 +9,7 @@ from semantic_kernel.contents.utils.author_role import AuthorRole
 
 from semantic_kernel.kernel import Kernel
 from semantic_kernel.functions.kernel_function_decorator import kernel_function
+from accessSql import SQL
 
 def get_filepath_for_filename(filename: str) -> str:
     base_directory = os.path.dirname(os.path.realpath(__file__))
@@ -20,23 +21,26 @@ filenames = [
     "schema.json",
 ]
 
-class SQLPlugin:
-    """SQL query engine."""
+# class SQLPlugin:
+#     """SQL query engine."""
+#     def __init__(self):
+#         self.isOpen = False
+#         self.connection = None
 
-    @kernel_function(description="Executes a query.")
-    def try_query(self, query) -> Annotated[str, "Returns results of the query execution."]:
-        print(f"Executing try_query: {query}")
-        return """
-        John, Smith, 123 Main St, Springfield, IL, 62701
-        Jown, Doe, 456 Elm St, Chicago, IL, 60601
-        """
+#     @kernel_function(description="Executes a query.")
+#     def try_query(self, query) -> Annotated[str, "Returns results of the query execution."]:
+#         print(f"Executing try_query: {query}")
+#         return """
+#         John, Smith, 123 Main St, Springfield, IL, 62701
+#         Jown, Doe, 456 Elm St, Chicago, IL, 60601
+#         """
 
 async def main() -> None:
     from azure.identity.aio import DefaultAzureCredential
     
     kernel = Kernel()
-    sql = SQLPlugin()
-    kernel.add_function("try_query", sql.try_query)
+    sql = SQL()
+    kernel.add_function("try_query", sql.execute)
     token = await DefaultAzureCredential().get_token("https://cognitiveservices.azure.com/.default")
 
     agent = await AzureAssistantAgent.create(
@@ -48,6 +52,7 @@ async def main() -> None:
       You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. 
       Use only table and column names contained in that schema. Always use the value of the TABLE_SCHEMA column in the schema as prefix for the table name.
       You may only generate SELECT statements. Do not generate DLETE, INSERT or UPDATE statements.
+      You must always include 'TOP 3' in the query.
       If you cannot generate a query, you can ask the user for more information or clarification. 
       If you can generate a query, call the try_query function with the query as an argument. 
       If the function responds with an error message, try correcting the original query or ask the user for more information. Otherwise, return the query to the user.
@@ -58,7 +63,7 @@ async def main() -> None:
 
     print("Creating thread...")
     thread_id = await agent.create_thread()
-
+    await sql.open()
     try:
         is_complete: bool = False
         while not is_complete:
@@ -92,6 +97,7 @@ async def main() -> None:
             [await agent.delete_file(file_id) for file_id in agent.file_search_file_ids]
             await agent.delete_thread(thread_id)
             await agent.delete()
+        await sql.close()
 
 
 if __name__ == "__main__":
