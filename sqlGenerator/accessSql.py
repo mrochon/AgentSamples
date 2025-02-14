@@ -55,7 +55,9 @@ class SQL:
             cursor = self.connection.cursor()
             cursor.execute(query)
             rows = cursor.fetchall()
-            cursor.close()   
+            cursor.close()  
+            if len(rows) == 0:
+                return "No results in the database" 
             return list_to_csv(rows)
         except pyodbc.Error as e: 
             return e.args[1] 
@@ -73,7 +75,13 @@ async def main() -> None:
     sql = SQL()
     await sql.open()
     print(sql.isOpen)
-    d = sql.execute("SELECT TOP 3 FirstName, LastName FROM SalesLT.Customer")
+    d = sql.execute("""
+                    SELECT TOP 3 C.CustomerID, C.FirstName, C.LastName 
+FROM SalesLT.Customer AS C 
+JOIN SalesLT.SalesOrderHeader AS SOH ON C.CustomerID = SOH.CustomerID 
+JOIN SalesLT.SalesOrderDetail AS SOD ON SOH.SalesOrderID = SOD.SalesOrderID 
+WHERE SOD.ProductID = 680
+                    """)
     if isinstance(d, str):
         print(d)
     else:

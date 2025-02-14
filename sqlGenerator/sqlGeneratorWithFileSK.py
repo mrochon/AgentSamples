@@ -75,7 +75,7 @@ async def main():
     userQueries = [
         "List names of all customers.",
         "Which customers placed orders in the last two months?",
-        "Which customer ordered product with id 'XYZ'?",
+        "Which customer ordered product with id '680'?",
         "Delete all customers",
     ]
     try:
