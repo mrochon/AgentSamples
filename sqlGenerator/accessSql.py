@@ -50,8 +50,10 @@ class SQL:
             logging.info("Database connection closed.")
     
     @kernel_function(description="Executes a query.")        
-    def execute(self, query):
+    async def execute(self, query):
         try:
+            if not self.isOpen:
+                await self.open()
             cursor = self.connection.cursor()
             cursor.execute(query)
             rows = cursor.fetchall()

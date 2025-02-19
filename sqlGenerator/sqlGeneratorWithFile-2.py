@@ -1,25 +1,16 @@
 import os
 import asyncio
-import json
-import time
 from dotenv import load_dotenv
 from azure.identity.aio import DefaultAzureCredential
 from helpers import function_to_schema
-from openai import AzureOpenAI
-from accessSql import SQL
+from AzureOpenAIExt import AzureOpenAIExt
 
 load_dotenv()
 
 async def main() -> None:
-    from azure.identity.aio import DefaultAzureCredential
-    token = await DefaultAzureCredential(
-            exclude_interactive_browser_credential=True).get_token("https://cognitiveservices.azure.com/.default")
-    client = AzureOpenAI(
-        azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),    
-        # api_key=os.getenv("AZURE_OPENAI_API_KEY"),
-        api_version="2024-05-01-preview",
-        azure_ad_token = token.token
-    )
+    token_provider = await DefaultAzureCredential(exclude_interactive_browser_credential=True).get_token("https://cognitiveservices.azure.com/.default") 
+    token = token_provider.token  
+    client = AzureOpenAIExt(token=token)
 
     vector_store = client.beta.vector_stores.create(name="DB Schema")
     file_paths = ["sqlGenerator/Schema.json"]
@@ -32,8 +23,6 @@ async def main() -> None:
     )
     print(file_batch.status)
     print(file_batch.file_counts)      
-    sql = SQL()
-    token = await DefaultAzureCredential().get_token("https://cognitiveservices.azure.com/.default")
 
     sql_agent = client.beta.assistants.create(
         name="SQL Expert",
@@ -48,7 +37,21 @@ async def main() -> None:
               """,
         model = os.getenv("AZURE_OPENAI_CHAT_DEPLOYMENT_NAME"), 
         tools=[
-          {"type": "file_search"}, function_to_schema(SQL.execute)],
+          {"type": "file_search"}, 
+          {
+            "type": "function",
+            "function": {
+                "name": "execute",
+                "description": "Execute an SQL query",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "SQl statement to execute"}
+                    },
+                    "required": ["query"]
+                }
+            }
+        }],
         tool_resources={"file_search": {"vector_store_ids": [vector_store.id]}},    
         temperature=1,
         top_p=1  
@@ -57,67 +60,34 @@ async def main() -> None:
     print("Creating thread...")
     thread = client.beta.threads.create()
     thread_id = thread.id
-    await sql.open()
+
     try:
         is_complete: bool = False
-        user_input = input("User:> ")
+        user_input = input(f"Your query\n:> ")
         if not user_input or user_input.isspace():
           is_complete = True
         else:
-          client.beta.threads.messages.create(
-              thread_id=thread_id,
-              role="user",
-              content=user_input
-          )
-          run = client.beta.threads.runs.create(
-              thread_id=thread_id,
-              assistant_id=sql_agent.id
-          )
+          run = client.send_and_run(sql_agent.id, thread.id, user_input)        
+        msg = "Please enter your query"
         while not is_complete:
-          status = run.status
-          while status not in ["completed", "cancelled", "expired", "failed", "requires_action"]:
-              run = client.beta.threads.runs.retrieve(thread_id=run.thread_id, run_id=run.id)
-              status = run.status
-              if status == "queued":
-                  time.sleep(5)
-              if status == "failed":
-                  print(run.last_error.message)
+          run = client.wait_for_run(run)
           match run.status:
             case "completed":
               msg = client.beta.threads.messages.list(thread_id=thread_id, order="desc").data[0].content[0].text.value
               user_input = input(f"{msg}\n:> ")
-              if user_input == "":
+              if not user_input or user_input.isspace():
                 break
-              client.beta.threads.messages.create(
-                thread_id=thread_id,
-                role="user",
-                content=user_input
-                )
-              run = client.beta.threads.runs.create(
-                thread_id=thread_id,
-                assistant_id=sql_agent.id
-              )
+              run = client.send_and_run(sql_agent.id, thread.id, user_input)
             case "requires_action":
-              tool_call = run.required_action.submit_tool_outputs.tool_calls[0]
-              name = tool_call.function.name
-              arguments = json.loads(tool_call.function.arguments)
-              print("Calling Function:", name)
-              tool_outputs = []
-              if name == "execute":
-                tool_outputs.append({"tool_call_id": tool_call.id, "output": sql.execute(arguments["query"])})
-              else:
-                raise ValueError(f"Unknown function: {name}")
-              run = client.beta.threads.runs.submit_tool_outputs(
-                thread_id=run.thread_id,
-                run_id=run.id,
-                tool_outputs=tool_outputs,
-              )
+              run = await client.call_function(run)
             case 'failed':
-              print(f"Failed: {run.last_error.message}")
+              print
+              (f"Failed: {run.last_error.message}")
               break
             case _:
               print(f"Unexpected action: {run.status}")
               break
+
     except Exception as e:
         print(f"Error: {e}")
     finally:
@@ -126,7 +96,7 @@ async def main() -> None:
           client.beta.vector_stores.delete(vector_store.id)
           client.beta.assistants.delete(sql_agent.id)
           client.beta.threads.delete(thread.id)
-        await sql.close()
+        await client.close()
 
 
 if __name__ == "__main__":
