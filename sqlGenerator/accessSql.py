@@ -22,7 +22,7 @@ class SQL:
             access_token = token_resp.token
             if not access_token:
                 raise Exception("Could not obtain access token")
-            server_name = os.environ["DB_SERVER"]
+            server_name = os.environ["DB_SERVER"] 
             if not server_name:
                 raise Exception("DB_SERVER environment variable is not set")
             db_name = os.environ["DB_NAME"]

@@ -92,10 +92,9 @@ async def main() -> None:
         print(f"Error: {e}")
     finally:
         print("Cleaning up resources...")
-        if sql_agent is not None:
-          client.beta.vector_stores.delete(vector_store.id)
-          client.beta.assistants.delete(sql_agent.id)
-          client.beta.threads.delete(thread.id)
+        client.beta.vector_stores.delete(vector_store.id)
+        client.beta.assistants.delete(sql_agent.id)
+        client.beta.threads.delete(thread.id)
         await client.close()
 
 

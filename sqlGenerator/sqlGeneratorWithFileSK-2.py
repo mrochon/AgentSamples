@@ -21,50 +21,37 @@ filenames = [
     "schema.json",
 ]
 
-# class SQLPlugin:
-#     """SQL query engine."""
-#     def __init__(self):
-#         self.isOpen = False
-#         self.connection = None
-
-#     @kernel_function(description="Executes a query.")
-#     def try_query(self, query) -> Annotated[str, "Returns results of the query execution."]:
-#         print(f"Executing try_query: {query}")
-#         return """
-#         John, Smith, 123 Main St, Springfield, IL, 62701
-#         Jown, Doe, 456 Elm St, Chicago, IL, 60601
-#         """
-
 async def main() -> None:
     from azure.identity.aio import DefaultAzureCredential
     
     kernel = Kernel()
     sql = SQL()
     kernel.add_function("try_query", sql.execute)
-    token = await DefaultAzureCredential().get_token("https://cognitiveservices.azure.com/.default")
-
-    agent = await AzureAssistantAgent.create(
-        kernel=kernel,
-        ad_token=token.token,
-        service_id="chat service",
-        name="sqlGenerator",
-        instructions="""
-      You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. 
-      Use only table and column names contained in that schema. Always use the value of the TABLE_SCHEMA column in the schema as prefix for the table name.
-      You may only generate SELECT statements. Do not generate DLETE, INSERT or UPDATE statements.
-      You must always include 'TOP 3' in the query.
-      If you cannot generate a query, you can ask the user for more information or clarification. 
-      If you can generate a query, call the try_query function with the query as an argument. 
-      If the function responds with an error message, try correcting the original query or ask the user for more information. Otherwise, return the query to the user.
-            """,
-        enable_file_search=True,
-        vector_store_filenames=[get_filepath_for_filename(filename) for filename in filenames],
-    )
-
-    print("Creating thread...")
-    thread_id = await agent.create_thread()
-    await sql.open()
+    
     try:
+        token = await DefaultAzureCredential().get_token("https://cognitiveservices.azure.com/.default")
+
+        agent = await AzureAssistantAgent.create(
+            kernel=kernel,
+            ad_token=token.token,
+            service_id="chat service",
+            name="sqlGenerator",
+            instructions="""
+        You are an SQL expert who translates user requests into SQL queries. The database schema is provided to you. 
+        Use only table and column names contained in that schema. Always use the value of the TABLE_SCHEMA column in the schema as prefix for the table name.
+        You may only generate SELECT statements. Do not generate DLETE, INSERT or UPDATE statements.
+        You must always include 'TOP 3' in the query.
+        If you cannot generate a query, you can ask the user for more information or clarification. 
+        If you can generate a query, call the try_query function with the query as an argument. 
+        If the function responds with an error message, try correcting the original query or ask the user for more information. Otherwise, return the query to the user.
+                """,
+            enable_file_search=True,
+            vector_store_filenames=[get_filepath_for_filename(filename) for filename in filenames],
+        )
+
+        print("Creating thread...")
+        thread_id = await agent.create_thread()
+        await sql.open()
         is_complete: bool = False
         while not is_complete:
             user_input = input("User:> ")
