@@ -1,7 +1,6 @@
 import csv
 import io
 
-
 columns = {
     "Address": [["AddressID", "AddressLine1", "AddressLine2", "City", "StateProvinceID", "PostalCode", "rowguid", "ModifiedDate"]],
     "Customer": [["CustomerID", "PersonID", "FirstName", "LastName", "AccountNumber", "rowguid", "ModifiedDate"]],
