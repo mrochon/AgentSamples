@@ -4,6 +4,7 @@
 # Licensed under the MIT License.
 # ------------------------------------
 import os
+import sys
 import yaml  # type: ignore
 
 from opentelemetry import trace
@@ -12,10 +13,9 @@ from typing import Any, Dict, Optional, Set, List
 from azure.ai.projects import AIProjectClient
 from azure.ai.agents import AgentsClient
 from azure.ai.agents.models import FunctionTool, ToolSet, MessageRole, Agent, AgentThread
-from utils.functions import fetch_current_datetime
+from utils.functions import connect_to_genie, ask_genie, execute_sql, fetch_current_datetime
 
 tracer = trace.get_tracer(__name__)
-
 
 class _AgentTeamMember:
     """
@@ -60,10 +60,11 @@ class AgentTeam:
     A class that represents a team of agents.
 
     """
-    _agents_client: AgentsClient
+
     # Static container to store all instances of AgentTeam
     _teams: Dict[str, "AgentTeam"] = {}
 
+    _project_client: AIProjectClient
     _agents_client: AgentsClient
     _agent_thread: Optional[AgentThread] = None
     _team_leader: Optional[_AgentTeamMember] = None
@@ -72,31 +73,33 @@ class AgentTeam:
     _team_name: str = ""
     _current_request_span: Optional[Span] = None
     _current_task_span: Optional[Span] = None
-
-    def __init__(self, team_name: str, project_client: AIProjectClient):
+    USER_PROMPT_EXAMPLE = ""
+  
+    def __init__(self, project_client: AIProjectClient, config_path):
         """
         Initialize a new AgentTeam and set it as the singleton instance.
         """
+        AgentTeam._teams.clear() # MR: added, but why do we need static _teams?!
+        if project_client is None:
+            raise ValueError("No AIProjectClient provided.")      
+        self._project_client = project_client  
         agents_client = project_client.agents
-        # Validate that the team_name is a non-empty string
-        if not isinstance(team_name, str) or not team_name:
-            raise ValueError("Team name must be a non-empty string.")
-        # Check for existing team with the same name
-        if team_name in AgentTeam._teams:
-            raise ValueError(f"A team with the name '{team_name}' already exists.")
-        self.team_name = team_name
-        if agents_client is None:
-            raise ValueError("No AgentsClient provided.")
-        self._agents_client = agents_client
-        # Store the instance in the static container
-        AgentTeam._teams[team_name] = self
 
-        # Get the directory of the current file
-        current_dir = os.path.dirname(os.path.abspath(__file__))
-        # Construct the full path to the config file
-        file_path = os.path.join(current_dir, "agent_team_config.yaml")
-        with open(file_path, "r") as config_file:
+        with open(config_path, "r") as config_file:
             config = yaml.safe_load(config_file)
+            team_name = config["TEAM_NAME"]
+            # Validate that the team_name is a non-empty string
+            if not isinstance(team_name, str) or not team_name:
+                raise ValueError("Team name must be a non-empty string.")
+            # Check for existing team with the same name
+            if team_name in AgentTeam._teams:
+                raise ValueError(f"A team with the name '{team_name}' already exists.")
+            self.team_name = team_name
+            if agents_client is None:
+                raise ValueError("No AgentsClient provided.")
+            self._agents_client = agents_client
+            # Store the instance in the static container
+            AgentTeam._teams[team_name] = self            
             self.TEAM_LEADER_INSTRUCTIONS = config["TEAM_LEADER_INSTRUCTIONS"]
             self.TEAM_LEADER_INITIAL_REQUEST = config["TEAM_LEADER_INITIAL_REQUEST"]
             self.TEAM_LEADER_TASK_COMPLETENESS_CHECK_INSTRUCTIONS = config[
@@ -105,6 +108,7 @@ class AgentTeam:
             self.TEAM_MEMBER_CAN_DELEGATE_INSTRUCTIONS = config["TEAM_MEMBER_CAN_DELEGATE_INSTRUCTIONS"]
             self.TEAM_MEMBER_NO_DELEGATE_INSTRUCTIONS = config["TEAM_MEMBER_NO_DELEGATE_INSTRUCTIONS"]
             self.TEAM_LEADER_MODEL = config["TEAM_LEADER_MODEL"].strip()
+            self.USER_PROMPT_EXAMPLE = config["USER_PROMPT_EXAMPLE"].strip()
             self.AGENTS = config.get("AGENTS", [])
 
     @staticmethod
@@ -121,11 +125,12 @@ class AgentTeam:
         if team_name not in AgentTeam._teams:
             raise ValueError(f"No team found with the name '{team_name}'.")
         del AgentTeam._teams[team_name]
-        
+
     def build_team(self) -> None:
         """
         Build the team by creating agents based on the configuration.
         """
+        connect_to_genie(self._project_client)
         all_functions: Set = set()
         all_functions.add(_create_task)
         for agent in self.AGENTS:
@@ -138,6 +143,7 @@ class AgentTeam:
             toolset = ToolSet()
             agent_functions: Set[callable] = set()
             for func in agent.get("functions", []):
+                print(f"Adding function: {func}", file=sys.stderr)
                 # Convert function name string to actual callable
                 if isinstance(func, str):
                     try:
@@ -166,6 +172,12 @@ class AgentTeam:
             )
         self._agents_client.enable_auto_function_calls(all_functions)
         self.assemble_team()
+
+    def get_prompt_example(self) -> str:
+        """
+        Returns the prompt to be used to start the execution loop
+        """
+        return self.USER_PROMPT_EXAMPLE  
         
     def add_agent(
         self, model: str, name: str, instructions: str, toolset: Optional[ToolSet] = None, can_delegate: bool = True
@@ -202,6 +214,7 @@ class AgentTeam:
             can_delegate=can_delegate,
         )
         self._members.append(member)
+        print(f"Added agent: {name}")
 
     def set_team_leader(self, model: str, name: str, instructions: str, toolset: Optional[ToolSet] = None) -> None:
         """
@@ -243,6 +256,18 @@ class AgentTeam:
             instructions=self._team_leader.instructions,
             toolset=self._team_leader.toolset,
         )
+
+    def _get_agent(self, agent_id) -> Optional[_AgentTeamMember]:
+        """
+        Retrieve a team member (agent) by agent_instance.id.
+        Returns None if not found.
+        """
+        if self._team_leader and getattr(self._team_leader.agent_instance, "id", None) == agent_id:
+            return self._team_leader
+        for member in self._members:
+            if member.agent_instance and getattr(member.agent_instance, "id", None) == agent_id:
+                return member
+        return None
 
     def _set_default_team_leader(self):
         """
@@ -309,11 +334,11 @@ class AgentTeam:
         assert self._agents_client is not None, "agents_client must not be None"
 
         if self._team_leader and self._team_leader.agent_instance:
-            print(f"Deleting team leader agent '{self._team_leader.name}'")
+            print(f"Deleting team leader agent '{self._team_leader.name}'", file=sys.stderr)
             self._agents_client.delete_agent(self._team_leader.agent_instance.id)
         for member in self._members:
             if member is not self._team_leader and member.agent_instance:
-                print(f"Deleting agent '{member.name}'")
+                print(f"Deleting agent '{member.name}'", file=sys.stderr)
                 self._agents_client.delete_agent(member.agent_instance.id)
         AgentTeam._remove_team(self.team_name)
 
@@ -339,7 +364,7 @@ class AgentTeam:
 
         if self._agent_thread is None:
             self._agent_thread = self._agents_client.threads.create()
-            print(f"Created thread with ID: {self._agent_thread.id}")
+            # print(f"Created thread with ID: {self._agent_thread.id}", file=sys.stderr)
 
         with tracer.start_as_current_span("agent_team_request") as current_request_span:
             self._current_request_span = current_request_span
@@ -365,24 +390,25 @@ class AgentTeam:
                         f"Starting task for agent '{task.recipient}'. "
                         f"Requestor: '{task.requestor}'. "
                         f"Task description: '{task.task_description}'."
+                        , file=sys.stderr
                     )
                     message = self._agents_client.messages.create(
                         thread_id=self._agent_thread.id,
                         role="user",
                         content=task.task_description,
                     )
-                    print(f"Created message with ID: {message.id} for task in thread {self._agent_thread.id}")
+                    # print(f"Created message with ID: {message.id} for task in thread {self._agent_thread.id}", file=sys.stderr)
                     agent = self._get_member_by_name(task.recipient)
                     if agent and agent.agent_instance:
                         run = self._agents_client.runs.create_and_process(
                             thread_id=self._agent_thread.id, agent_id=agent.agent_instance.id
                         )
-                        print(f"Created and processed run for agent '{agent.name}', run ID: {run.id}")
+                        # print(f"Created and processed run for agent '{agent.name}', run ID: {run.id}", file=sys.stderr)
                         text_message = self._agents_client.messages.get_last_message_text_by_role(
                             thread_id=self._agent_thread.id, role=MessageRole.AGENT
                         )
                         if text_message and text_message.text:
-                            print(f"Agent '{agent.name}' completed task. " f"Outcome: {text_message.text.value}")
+                            print(f"Agent '{agent.name}' completed task. " f"Outcome: {text_message.text.value}", file=sys.stderr)
                             if self._current_task_span is not None:
                                 self._add_task_completion_event(self._current_task_span, result=text_message.text.value)
 
@@ -400,6 +426,19 @@ class AgentTeam:
                     self._current_task_span = None
             # self._current_request_span.end()
             self._current_request_span = None
+        messages = self._agents_client.messages.list(
+            thread_id=self._agent_thread.id,
+            order="desc", 
+            limit=1
+        )
+        leader_msg = [msg for msg in messages if msg.role == MessageRole.AGENT][0]
+        return leader_msg.content[0].text.value
+        # print("----RESULT----")
+        # for msg in messages:
+        #     agent = self._get_agent(msg.agent_id)                
+        #     if agent is None:
+        #         continue
+        #     print(f"Agent '{agent.name}' message: {msg.content[0].text.value}")            
 
     def _get_member_by_name(self, name) -> Optional[_AgentTeamMember]:
         """

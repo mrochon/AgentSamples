@@ -1,0 +1,9 @@
+
+azure-ai-projects
+azure-ai-agents 
+azure-identity 
+pyyaml 
+opentelemetry-sdk
+azure-mgmt-monitor
+ databricks-ai-bridge
+databricks-sdk
