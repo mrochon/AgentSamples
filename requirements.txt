@@ -26,3 +26,6 @@ IPython
 pyyaml
 opentelemetry-sdk
 azure-mgmt-monitor
+
+# Required for GitHub API integration
+PyGithub

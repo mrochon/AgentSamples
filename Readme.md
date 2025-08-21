@@ -9,3 +9,5 @@ My experiements with Semantic Kernel and Assistants
 [AgentWithCode](/agentWithCode.ipynb) generates Py code to draw a sinus curve
 
 [AgentWithFunction](/agentWithFunction.ipynb) provides a list for packing for travel to a particular desination
+
+[AgentWithCodespaces](/agentWithCodespaces.ipynb) helps you view and manage your GitHub Codespaces
